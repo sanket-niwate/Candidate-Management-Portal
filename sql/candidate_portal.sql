@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 27, 2025 at 09:27 AM
+-- Generation Time: Nov 27, 2025 at 03:05 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -39,7 +39,8 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `name`, `email`, `password`) VALUES
-(1, 'Super Admin', 'admin@example.com', '$2y$10$e0NRx7B0iTpjKum0/Ykst.AmflB9AoH.JjY54Fgs1.oN3RSOG8MqK');
+(8, 'Admin User', 'admin@example.com', '$2y$10$MlFlN9TpFraw56DVOZ0uE.qqc8Oj2c6.ieC0RdmQam1aso.EUSRvC'),
+(10, 'Admin User', 'admin@admin.com', '$2y$10$iUdAixsWXUMrPOhxJTTS6uBGpdjiqNz3Og0eZ1unyAbl1WKr8Gg1m');
 
 -- --------------------------------------------------------
 
@@ -64,10 +65,9 @@ CREATE TABLE `candidate_entries` (
 --
 
 INSERT INTO `candidate_entries` (`id`, `user_id`, `name`, `email`, `phone`, `skills`, `profile_image`, `document`, `created_at`) VALUES
-(9, 2, 'sanket', 'sanket@gmail.com', '1234567890', 'sazz', '1764176047_backiee-223607.jpg', '1764172941_SanketNiwateResume (1).pdf', '2025-11-26 13:49:03'),
 (10, 3, 'neha', 'neha@gmail.com', '1234567890', 'ss', '1764172223_692721bfb29a4.jpg', '1764165170_692706324191d.pdf', '2025-11-26 13:52:50'),
 (11, 4, 'sid', 'sid@gmail.com', '1234567890', 's', '1764181743_692746efc14c4.jpg', '1764181743_692746efc1ce7.pdf', '2025-11-26 18:29:03'),
-(12, 6, 'tan', 'tan@gmail.com', '1234567890', 'd', '1764188089_69275fb9c89c7.jpg', '1764188089_69275fb9c8d46.pdf', '2025-11-26 20:14:49');
+(12, 6, 'tans', 'tan@gmail.com', '1234567890', 'dn', '1764188089_69275fb9c89c7.jpg', '1764188089_69275fb9c8d46.pdf', '2025-11-26 20:14:49');
 
 -- --------------------------------------------------------
 
@@ -91,11 +91,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `fullname`, `email`, `password`, `role`, `phone`, `profile_image`, `created_at`) VALUES
-(1, 'Admin User', 'admin@gmail.com', '$2y$10$e0NRx7B0iTpjKum0/Ykst.AmflB9AoH.JjY54Fgs1.oN3RSOG8MqK', 'admin', NULL, NULL, '2025-11-26 13:26:03'),
 (2, 'sanket', 'sanket@gmail.com', '$2y$10$g7.bVz5twA1ewLTd.hG5CekKxvq6SF/y/Km.S7e821P8Who/72kHu', 'user', NULL, '1764164897_69270521b359c.jpg', '2025-11-26 13:47:34'),
 (3, 'neha', 'neha@gmail.com', '$2y$10$yq.GvYzNDz6NHLy4uU9AFeiaEujErKgJDgb2FAbMUMLzQ9KhUwAye', 'user', NULL, NULL, '2025-11-26 13:50:58'),
 (4, 'sid', 'sid@gmail.com', '$2y$10$vp5zOoSED2OUKjUMGJCSBuzOTE4R1W5B0fb0yrziyXSOCBGnxusRe', 'user', NULL, NULL, '2025-11-26 18:27:31'),
-(6, 'tan', 'tan@gmail.com', '$2y$10$gGfR9ayJfg3AaXSULstohe8uyolRTySLT.feEZfUaahnePztXB1Xe', 'user', NULL, NULL, '2025-11-26 20:11:53');
+(6, 'tan', 'tan@gmail.com', '$2y$10$gGfR9ayJfg3AaXSULstohe8uyolRTySLT.feEZfUaahnePztXB1Xe', 'user', NULL, NULL, '2025-11-26 20:11:53'),
+(11, 'admin', 'admin@gmail.com', '$2y$10$yq.GvYzNDz6NHLy4uU9AFeiaEujErKgJDgb2FAbMUMLzQ9KhUwAye', 'admin', NULL, NULL, '2025-11-27 13:02:21');
 
 --
 -- Indexes for dumped tables
@@ -130,7 +130,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `candidate_entries`
@@ -142,7 +142,7 @@ ALTER TABLE `candidate_entries`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables
