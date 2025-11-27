@@ -28,9 +28,9 @@
 
 - [x] User Registration/Login
 - [x] Email Notifications
-- [ ] Admin Panel
-- [ ] Candidate CRUD Operations
-- [ ] File Uploads (Resumes)
+- [x] Admin Panel
+- [x] Candidate CRUD Operations
+- [x] File Uploads (Resumes)
 - [ ] Job Postings
 - [ ] Search & Filters
 
