@@ -17,9 +17,12 @@
 
 ## 📱 Screenshots
 
-![Register Page](screenshots/register.png)
-![Dashboard](images/dashboard.png)
-![Login](screenshots/login.png)
+![My entries Page](https://github.com/sanket-niwate/Candidate-Management-Portal/blob/main/images/Screenshot%202025-11-27%20175200.png)
+![User Dashboard](https://github.com/sanket-niwate/Candidate-Management-Portal/blob/main/images/Screenshot%202025-11-27%20175140.png)
+![Manage entries](https://github.com/sanket-niwate/Candidate-Management-Portal/blob/main/images/Screenshot%202025-11-27%20175228.png)
+![Admin dashboard](https://github.com/sanket-niwate/Candidate-Management-Portal/blob/main/images/Screenshot%202025-11-27%20175247.png)
+![Register](https://github.com/sanket-niwate/Candidate-Management-Portal/blob/main/images/Screenshot%202025-11-27%20180140.png)
+![Login](https://github.com/sanket-niwate/Candidate-Management-Portal/blob/main/images/Screenshot%202025-11-27%20180154.png)
 
 ## 🚀 Roadmap
 
