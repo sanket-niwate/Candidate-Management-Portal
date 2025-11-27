@@ -18,7 +18,7 @@
 ## 📱 Screenshots
 
 ![Register Page](screenshots/register.png)
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](images/dashboard.png)
 ![Login](screenshots/login.png)
 
 ## 🚀 Roadmap
