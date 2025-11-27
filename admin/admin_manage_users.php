@@ -29,7 +29,7 @@ if (!$users) {
 <body>
     <nav class="navbar navbar-dark bg-dark px-4">
         <a href="admin_dashboard.php" class="navbar-brand">Users View</a>
-        <a href="../logout.php" class="btn btn-danger btn-sm">Logout</a>
+        <a href="admin_logout.php" class="btn btn-danger btn-sm">Logout</a>
     </nav>
     <div class="container mt-4">
         <h3>All Users (<?php echo $users->num_rows; ?>)</h3>

@@ -1,7 +1,7 @@
 <?php 
 require_once '../includes/auth.php'; 
 require_once '../includes/db.php'; 
-//checkAdminLogin(); 
+checkAdminLogin(); 
 
 $userCount = $conn->query("SELECT COUNT(*) as total FROM users")->fetch_assoc()['total'];
 $adminCount = $conn->query("SELECT COUNT(*) as total FROM admins")->fetch_assoc()['total'];
@@ -9,15 +9,16 @@ $entryCount = $conn->query("SELECT COUNT(*) as total FROM candidate_entries")->f
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<head
-    <meta charset="UTF-8">
+
+<head <meta charset="UTF-8">
     <title>Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
     <nav class="navbar navbar-dark bg-dark px-4">
         <a class="navbar-brand">Admin Dashboard</a>
-        <a href="../logout.php" class="btn btn-danger btn-sm">Logout</a>
+        <a href="admin_logout.php" class="btn btn-danger btn-sm">Logout</a>
     </nav>
     <div class="container mt-4">
         <div class="row">
@@ -46,4 +47,5 @@ $entryCount = $conn->query("SELECT COUNT(*) as total FROM candidate_entries")->f
         </div>
     </div>
 </body>
+
 </html>
