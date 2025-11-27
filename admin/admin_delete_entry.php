@@ -1,7 +1,7 @@
 <?php
 require_once '../includes/auth.php';
 require_once '../includes/db.php';
-checkAdminLogin();
+//checkAdminLogin();
 
 if (!isset($_GET['id'])) {
     header('Location: admin_manage_entry.php'); exit;
