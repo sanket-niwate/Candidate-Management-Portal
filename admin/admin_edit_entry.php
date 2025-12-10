@@ -1,7 +1,8 @@
 <?php 
 require_once '../includes/auth.php'; 
 require_once '../includes/db.php'; 
-//checkAdminLogin(); 
+require_once '../admin/admin_navbar.php';
+checkAdminLogin(); 
 
 $error = $success = '';
 if (!isset($_GET['id'])) {
@@ -30,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error = 'Name, Email, Phone required!';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = 'Invalid email!';
-    } elseif (!preg_match('/[0-9]{10}/', $phone)) {
+    } elseif (!preg_match('/^[0-9]{10}$/', $phone)) {
         $error = 'Phone must be 10 digits!';
     } else {
         // Profile image upload
@@ -86,68 +87,125 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Edit Entry</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        font-family: 'Poppins', sans-serif;
+        padding-top: 70px;
+        color: #fff;
+    }
+
+
+
+    .container-card {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(12px);
+        border-radius: 16px;
+        padding: 25px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-label {
+        font-weight: 600;
+    }
+
+    img.preview {
+        max-width: 120px;
+        border-radius: 8px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        margin-top: 10px;
+    }
+
+    .btn-primary {
+        background: #5a67d8;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background: #434190;
+    }
+
+    .dashboard-title {
+        font-weight: 800;
+        font-size: 2.2rem;
+        color: #ffffffff;
+        margin-bottom: 40px;
+        text-align: center;
+    }
+    </style>
 </head>
+
 <body>
-    <nav class="navbar navbar-dark bg-dark px-4">
-        <a href="admin_manage_entry.php" class="navbar-brand">← Back to Entries</a>
-        <a href="../logout.php" class="btn btn-danger btn-sm">Logout</a>
-    </nav>
+
+
     <div class="container mt-4">
-        <?php if($success): ?><div class="alert alert-success"><?php echo $success; ?></div><?php endif; ?>
-        <?php if($error): ?><div class="alert alert-danger"><?php echo $error; ?></div><?php endif; ?>
-        
-        <form method="POST" enctype="multipart/form-data">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label class="form-label">Name</label>
-                        <input type="text" name="name" class="form-control" value="<?php echo htmlspecialchars($entry['name']); ?>" required>
+        <h3 class="dashboard-title">Edit Manage User Entries</h3><br>
+        <div class="container-card">
+            <?php if($success): ?><div class="alert alert-success text-dark"><?php echo $success; ?></div>
+            <?php endif; ?>
+            <?php if($error): ?><div class="alert alert-danger text-dark"><?php echo $error; ?></div><?php endif; ?>
+
+            <form method="POST" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Name</label>
+                            <input type="text" name="name" class="form-control"
+                                value="<?php echo htmlspecialchars($entry['name']); ?>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control"
+                                value="<?php echo htmlspecialchars($entry['email']); ?>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Phone</label>
+                            <input type="text" name="phone" class="form-control"
+                                value="<?php echo htmlspecialchars($entry['phone']); ?>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Skills</label>
+                            <textarea name="skills" class="form-control"
+                                rows="4"><?php echo htmlspecialchars($entry['skills']); ?></textarea>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" name="email" class="form-control" value="<?php echo htmlspecialchars($entry['email']); ?>" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Phone</label>
-                        <input type="text" name="phone" class="form-control" value="<?php echo htmlspecialchars($entry['phone']); ?>" required>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Profile Image</label>
+                            <input type="file" name="profile_image" class="form-control" accept="image/*">
+                            <?php if($entry['profile_image']): ?>
+                            <img src="../uploads/<?php echo htmlspecialchars($entry['profile_image']); ?>"
+                                class="preview">
+                            <?php endif; ?>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Document</label>
+                            <input type="file" name="document" class="form-control" accept=".pdf,.xls,.xlsx">
+                            <?php if($entry['document']): ?>
+                            <p class="mt-2 text-white">Current File: <a
+                                    href="../uploads/<?php echo htmlspecialchars($entry['document']); ?>"
+                                    target="_blank"
+                                    class="text-warning"><?php echo htmlspecialchars($entry['document']); ?></a></p>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label class="form-label">Skills</label>
-                        <textarea name="skills" class="form-control" rows="4"><?php echo htmlspecialchars($entry['skills']); ?></textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label class="form-label">Profile Image</label>
-                        <input type="file" name="profile_image" class="form-control" accept="image/*">
-                        <?php if($entry['profile_image']): ?>
-                            <div class="mt-2">
-                                <img src="../uploads/<?php echo htmlspecialchars($entry['profile_image']); ?>" width="100" class="rounded border">
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label class="form-label">Document</label>
-                        <input type="file" name="document" class="form-control" accept=".pdf,.xls,.xlsx">
-                       
-                    </div>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Update Entry</button>
-            <a href="admin_manage_entry.php" class="btn btn-secondary">Cancel</a>
-        </form>
+                <button type="submit" class="btn btn-primary">Update Entry</button>
+                <a href="admin_manage_entry.php" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

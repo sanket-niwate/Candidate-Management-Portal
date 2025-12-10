@@ -2,7 +2,7 @@
 session_start();
 require_once "../includes/db.php";
 
-// PHPMailer - ADD THESE LINES
+// PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -16,7 +16,7 @@ $mail_config = [
     'port' => 587,
     'username' => 'sanketnivate2k18@gmail.com',
     'password' => 'uxyq tdwf ibtf bdjn',
-    'from_email' => 'sanketnivate2k18@gmail.com',  
+    'from_email' => 'sanketnivate2k18@gmail.com',
     'from_name' => 'Candidate Portal'
 ];
 
@@ -26,7 +26,6 @@ function sendWelcomeEmail($email, $fullname, $config) {
     $mail = new PHPMailer(true);
     
     try {
-        // SMTP CONFIGURATION
         $mail->isSMTP();
         $mail->Host       = $config['host'];
         $mail->SMTPAuth   = true;
@@ -35,17 +34,16 @@ function sendWelcomeEmail($email, $fullname, $config) {
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = $config['port'];
 
-        // Recipients
         $mail->setFrom($config['from_email'], $config['from_name']);
         $mail->addAddress($email, $fullname);
 
-        // Content
         $mail->isHTML(true);
         $mail->Subject = 'Welcome to Candidate Portal!';
         $mail->Body    = "
             <h2>Hello $fullname,</h2>
             <p>Thank you for registering!</p>
-            <p>Your account is ready. <a href='http://localhost/Candidate Management Portal/public/login.php'>Login here</a></p>
+            <p>Your account is ready. 
+            <a href='http://localhost/Candidate Management Portal/public/login.php'>Login here</a></p>
             <hr><p>Best regards,<br>Candidate Portal Team</p>
         ";
 
@@ -57,7 +55,7 @@ function sendWelcomeEmail($email, $fullname, $config) {
     }
 }
 
-// Rest of your code remains SAME...
+// Registration logic
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fullname = trim($_POST['fullname']);
     $email = trim($_POST['email']);
@@ -75,12 +73,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $stmt->store_result();
+
         if ($stmt->num_rows > 0) {
             $error = "Email already exists!";
         } else {
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $stmt = $conn->prepare("INSERT INTO users (fullname, email, password, role) VALUES (?, ?, ?, 'user')");
             $stmt->bind_param("sss", $fullname, $email, $hash);
+
             if ($stmt->execute()) {
                 if (sendWelcomeEmail($email, $fullname, $mail_config)) {
                     $success = "Registration successful! Welcome email sent. <a href='login.php'>Login here</a>";
@@ -95,7 +95,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -103,43 +102,95 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Register</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
     <style>
     body {
-        background: #f4f6f9;
+        background: linear-gradient(135deg, #edf1f5, #ffffff, #eef3fa);
+        font-family: "Poppins", sans-serif;
+        height: 100vh;
     }
 
-    .register-card {
-        max-width: 450px;
-        margin: 80px auto;
-        padding: 30px;
-        background: #fff;
+    .register-box {
+        max-width: 480px;
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(12px);
+        margin: 60px auto;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+        transition: 0.3s ease;
+    }
+
+    .register-box:hover {
+        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.18);
+        transform: translateY(-4px);
+    }
+
+    h3 {
+        font-weight: 600;
+        color: #333;
+    }
+
+    label {
+        font-weight: 500;
+    }
+
+    .form-control {
         border-radius: 12px;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+        padding: 11px 14px;
+        background: #f9fafb;
+        border: 1px solid #d1d5db;
+    }
+
+    .btn-register {
+        background: #0d9488;
+        color: white;
+        border-radius: 12px;
+        padding: 12px;
+        font-weight: 600;
+        width: 100%;
+    }
+
+    .btn-register:hover {
+        background: #0d9488;
+    }
+
+    .btn-login {
+        border-radius: 12px;
+        padding: 12px;
+        width: 100%;
+        font-weight: 600;
     }
     </style>
 </head>
 
 <body>
-    <div class="register-card">
-        <h3 class="mb-4 text-center">Register</h3>
+
+    <div class="register-box">
+
+        <h3 class="text-center mb-4">Create Account</h3>
 
         <?php if ($success): ?>
         <div class="alert alert-success"><?= $success ?></div>
         <?php endif; ?>
+
         <?php if ($error): ?>
         <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
         <?php endif; ?>
 
         <form method="POST" class="needs-validation" novalidate>
+
             <div class="mb-3">
                 <label>Full Name</label>
                 <input type="text" name="fullname" class="form-control" required>
-                <div class="invalid-feedback">Enter full name.</div>
+                <div class="invalid-feedback">Enter your full name.</div>
             </div>
 
             <div class="mb-3">
-                <label>Email</label>
+                <label>Email Address</label>
                 <input type="email" name="email" class="form-control" required>
                 <div class="invalid-feedback">Enter a valid email.</div>
             </div>
@@ -153,12 +204,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="mb-3">
                 <label>Confirm Password</label>
                 <input type="password" name="confirm_password" class="form-control" required>
-                <div class="invalid-feedback">Confirm password.</div>
+                <div class="invalid-feedback">Confirm your password.</div>
             </div>
 
-            <button class="btn btn-success w-100">Register</button>
-            <a href="login.php" class="btn btn-secondary w-100 mt-2">Already have an account? Login</a>
+            <button class="btn btn-register mt-2">Register</button>
+
+            <a href="login.php" class="btn btn-secondary w-100 mt-3">Already have an account? Login</a>
+
         </form>
+
     </div>
 
     <script>
@@ -175,6 +229,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         });
     })();
     </script>
+
 </body>
 
 </html>
