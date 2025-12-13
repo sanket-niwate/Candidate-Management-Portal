@@ -30,7 +30,7 @@ $allowedProfile = ['jpg','jpeg','png'];
 // Extract values
 $fullname = $user['fullname'];
 $email = $user['email'];
-$mobile = $entry['mobile'] ?? 'Not updated';
+$mobile = $entry['phone'] ?? 'Not updated';
 $skills = $entry['skills'] ?? 'Not updated';
 
 // Image Update
@@ -86,13 +86,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_image']) && $e
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Update Entry Image</title>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
 
     <style>
     body {
-        background: linear-gradient(to bottom right, #eef2f7, #ffffff);
+        /* Background gradient matching navbar colors */
+        background: #003239;
+        color: #4f4f4f;
         font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
     }
 
     .container-box {
@@ -101,17 +105,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_image']) && $e
     }
 
     .card-custom {
-        background: #ffffffcc;
+        background: #f4f4f4cc;
+        /* Light grey with transparency */
         backdrop-filter: blur(10px);
         padding: 35px;
         border-radius: 18px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 10px 25px rgba(0, 84, 97, 0.15);
+        /* Teal shadow */
         transition: 0.3s ease;
     }
 
     .card-custom:hover {
         transform: translateY(-4px);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 12px 30px rgba(1, 135, 144, 0.25);
+        /* Hover shadow */
     }
 
     .profile-img {
@@ -119,39 +126,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_image']) && $e
         height: 130px;
         object-fit: cover;
         border-radius: 15px;
-        border: 2px solid #dfe3e8;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+        border: 2px solid #00b7b5;
+        /* Border color updated */
+        box-shadow: 0 4px 8px rgba(0, 84, 97, 0.15);
     }
 
     .label-box {
         font-weight: 600;
         margin-bottom: 6px;
-        color: #34495e;
+        color: #005461;
+        /* Dark teal text */
     }
 
     .display-box {
-        background: #f8f9fb;
+        background: #e8fafa;
+        /* Soft teal tint */
         border-radius: 10px;
         padding: 10px 14px;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        font-size: 0.95rem;
+        color: #005461;
+        /* Text color */
     }
 
     .btn-save {
-        background: #0d9488;
+        background: #018790;
+        /* Button main color */
         border: none;
         padding: 10px;
         border-radius: 10px;
         font-weight: 600;
+        color: white;
     }
 
     .btn-save:hover {
-        background: #0b7c72;
+        background: #005461;
+        /* Darker hover */
     }
 
     .btn-back {
         border-radius: 10px;
         padding: 10px;
+        background: #00b7b5;
+        color: white;
+    }
+
+    .btn-back:hover {
+        background: #018790;
     }
     </style>
+
 </head>
 
 <body>
@@ -197,6 +226,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_image']) && $e
                     <label class="label-box">Skills</label>
                     <div class="display-box"><?= htmlspecialchars($skills) ?></div>
                 </div>
+
 
                 <div class="mb-3">
                     <label class="label-box">Upload New Image (JPG/PNG, Max 2MB)</label>

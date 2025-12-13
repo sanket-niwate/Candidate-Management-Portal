@@ -36,47 +36,57 @@ if ($stmt = $conn->prepare($query)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard - Candidate Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-    body {
-        background: #eef2f7;
-        font-family: "Inter", sans-serif;
+    * {
+        font-family: 'Poppins', sans-serif !important;
     }
 
     /* NAVBAR STYLES */
+    .navbar,
+    .navbar a,
+    .nav-link,
+    .dropdown-item {
+        letter-spacing: 0.3px;
+    }
+
     .navbar {
         backdrop-filter: blur(16px);
-        background: rgba(255, 255, 255, 0.65) !important;
+        background: rgba(0, 84, 97, 0.85);
+        /* Dark teal glass effect */
         padding: 14px 28px;
-        border-bottom: 1px solid #d1d5db;
-        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+        border-bottom: 1px solid #00b7b5;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
     }
 
     .navbar-brand {
         font-weight: 800;
         font-size: 1.55rem;
-        color: #1f2937 !important;
+        color: #f4f4f4 !important;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     }
 
     .nav-link {
         font-weight: 600;
         font-size: 0.98rem;
-        color: #374151 !important;
+        color: #f4f4f4 !important;
         margin-right: 18px;
         border-radius: 10px;
         padding: 8px 14px;
-        transition: 0.25s ease;
+        transition: all 0.3s ease;
     }
 
     .nav-link:hover {
-        background: #e5edff;
-        color: #1d4ed8 !important;
+        background: linear-gradient(135deg, #00b7b5, #018790);
+        color: #f4f4f4 !important;
+        box-shadow: 0 4px 12px rgba(0, 183, 181, 0.3);
     }
 
     .nav-link.active {
-        background: #dbe8ff;
-        color: #1d4ed8 !important;
+        background: #018790;
+        color: #f4f4f4 !important;
         font-weight: 700;
     }
 
@@ -86,24 +96,44 @@ if ($stmt = $conn->prepare($query)) {
         height: 45px;
         border-radius: 50%;
         object-fit: cover;
-        border: 2px solid white;
+        border: 2px solid #f4f4f4;
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
+    .profile-thumb:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 15px rgba(0, 183, 181, 0.5);
+    }
+
+    /* LOGOUT BUTTON */
     .logout-btn {
         background: #ef4444;
         border: none;
         padding: 6px 14px;
         border-radius: 8px;
         font-weight: 600;
-        transition: 0.25s ease;
+        color: #fff;
+        transition: all 0.25s ease;
     }
 
     .logout-btn:hover {
         background: #dc2626;
-        transform: scale(1.03);
+        transform: scale(1.05);
+    }
+
+    /* TOGGLER BUTTON */
+    .navbar-toggler {
+        border: none;
+        outline: none;
+    }
+
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(244,244,244,0.9)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
     }
     </style>
+
+
 </head>
 
 <body>
@@ -141,6 +171,7 @@ if ($stmt = $conn->prepare($query)) {
                 <div class="d-flex align-items-center ms-3">
                     <img src="<?= htmlspecialchars($profileImage) ?>" class="profile-thumb me-2" alt="Profile">
                     <a href="../public/logout.php" class="logout-btn text-white text-decoration-none">Logout</a>
+
                 </div>
             </div>
         </div>

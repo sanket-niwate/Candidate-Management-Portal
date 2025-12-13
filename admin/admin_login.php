@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         align-items: center;
         justify-content: center;
         padding: 20px;
-
+        font-family: "Poppins", sans-serif;
         /* OPTIONAL — uncomment below to add a background image */
 
         /* background: url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b') no-repeat center center/cover; */
@@ -124,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
 
         <p class="mt-3 text-muted small text-center">
-            Use admin email from <code>admins</code> table.
+            Use admin email from <code>Admins</code> table.
         </p>
 
     </div>

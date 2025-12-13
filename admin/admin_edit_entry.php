@@ -42,14 +42,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             } elseif ($_FILES['profile_image']['size'] > 2*1024*1024) {
                 $error = 'Profile max 2MB!';
             } else {
-                $folder = '../uploads/';
-                $newFile = time() . '_' . basename($_FILES['profile_image']['name']);
-                if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $folder . $newFile)) {
-                    if (!empty($profile_image) && file_exists($folder . $profile_image)) {
-                        unlink($folder . $profile_image);
-                    }
-                    $profile_image = $newFile;
-                }
+                $folder = '../uploads/profile/';
+$newFile = time() . '_' . basename($_FILES['profile_image']['name']);
+
+if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $folder . $newFile)) {
+    if (!empty($profile_image) && file_exists($folder . $profile_image)) {
+        unlink($folder . $profile_image);
+    }
+    $profile_image = $newFile;
+}
+
             }
         }
 
@@ -99,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     body {
         min-height: 100vh;
         background: linear-gradient(135deg, #667eea, #764ba2);
-        font-family: 'Poppins', sans-serif;
+        font-family: "Poppins", sans-serif;
         padding-top: 70px;
         color: #fff;
     }
@@ -182,10 +184,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div class="mb-3">
                             <label class="form-label">Profile Image</label>
                             <input type="file" name="profile_image" class="form-control" accept="image/*">
-                            <?php if($entry['profile_image']): ?>
-                            <img src="../uploads/<?php echo htmlspecialchars($entry['profile_image']); ?>"
+                            <?php if ($entry['profile_image']): ?>
+                            <img src="../uploads/profile/<?php echo htmlspecialchars($entry['profile_image']); ?>"
                                 class="preview">
                             <?php endif; ?>
+
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Document</label>

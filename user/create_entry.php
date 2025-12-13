@@ -2,25 +2,48 @@
 require_once "../includes/auth.php";
 require_once "../includes/db.php";
 require_once "../user/navbar.php";
-
 checkLogin();
 
 $user_id = $_SESSION['user_id'];
 $error = $success = "";
 
-$allowedProfile = ['jpg','jpeg','png'];
-$allowedDocs    = ['pdf','xls','xlsx'];
+// Allowed file types
+$allowedProfile = ['jpg', 'jpeg', 'png'];
+$allowedDocs    = ['pdf', 'xls', 'xlsx'];
 
+/*-------------------------------------------
+    REUSABLE FILE UPLOAD FUNCTION
+-------------------------------------------*/
+function uploadFile($file, $allowed, $folderName, $maxSizeMB = 2) {
+
+    if (empty($file['name'])) return null;
+
+    $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    if (!in_array($ext, $allowed)) return "invalid";
+
+    if ($file['size'] > ($maxSizeMB * 1024 * 1024)) return "size";
+
+    $folder = "../uploads/$folderName/";
+    if (!is_dir($folder)) mkdir($folder, 0777, true);
+
+    $newName = time() . '_' . uniqid() . '.' . $ext;
+    move_uploaded_file($file['tmp_name'], $folder . $newName);
+
+    return $newName;
+}
+
+/*-------------------------------------------
+    FORM SUBMIT
+-------------------------------------------*/
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
     $name   = trim($_POST['name']);
     $email  = trim($_POST['email']);
     $phone  = trim($_POST['phone']);
     $skills = trim($_POST['skills']);
 
-    $profile_image = null;
-    $document = null;
-
-    if (empty($name) || empty($email) || empty($phone)) {
+    // Basic Validation
+    if (!$name || !$email || !$phone) {
         $error = "Name, Email, and Phone are required!";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "Invalid email!";
@@ -28,54 +51,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error = "Phone must be 10 digits!";
     }
 
-    if (empty($error) && !empty($_FILES['profile_image']['name'])) {
-        $ext = strtolower(pathinfo($_FILES['profile_image']['name'], PATHINFO_EXTENSION));
+    if (!$error) {
+        // Upload Files
+        $profile_image = uploadFile($_FILES['profile_image'], $allowedProfile, "profile");
+        $document      = uploadFile($_FILES['document'], $allowedDocs, "documents");
 
-        if (!in_array($ext, $allowedProfile)) {
-            $error = "Profile must be JPG/PNG!";
-        } elseif ($_FILES['profile_image']['size'] > 2*1024*1024) {
-            $error = "Profile max 2MB!";
-        } else {
-            $folder = "../uploads/profile/";
-            if(!is_dir($folder)) mkdir($folder,0777,true);
-
-            $profile_image = time().'_'.uniqid().'.'.$ext;
-            move_uploaded_file($_FILES['profile_image']['tmp_name'], $folder.$profile_image);
-        }
+        if ($profile_image === "invalid")     $error = "Profile must be JPG or PNG!";
+        elseif ($profile_image === "size")    $error = "Profile must be less than 2MB!";
+        elseif ($document === "invalid")      $error = "Document must be PDF/XLS/XLSX!";
+        elseif ($document === "size")         $error = "Document must be less than 2MB!";
     }
 
-    if (empty($error) && !empty($_FILES['document']['name'])) {
-        $ext = strtolower(pathinfo($_FILES['document']['name'], PATHINFO_EXTENSION));
+    // Insert into DB
+    if (!$error) {
 
-        if (!in_array($ext, $allowedDocs)) {
-            $error = "Document must be PDF/XLS/XLSX!";
-        } elseif ($_FILES['document']['size'] > 2*1024*1024) {
-            $error = "Document max 2MB!";
-        } else {
-            $folder = "../uploads/documents/";
-            if(!is_dir($folder)) mkdir($folder,0777,true);
-
-            $document = time().'_'.uniqid().'.'.$ext;
-            move_uploaded_file($_FILES['document']['tmp_name'], $folder.$document);
-        }
-    }
-
-    if (empty($error)) {
         $stmt = $conn->prepare("INSERT INTO candidate_entries 
-            (user_id, name, email, phone, skills, profile_image, document) 
+            (user_id, name, email, phone, skills, profile_image, document)
             VALUES (?, ?, ?, ?, ?, ?, ?)");
 
         $stmt->bind_param("issssss", $user_id, $name, $email, $phone, $skills, $profile_image, $document);
 
-        if ($stmt->execute()) {
-            $success = "Entry created successfully!";
-        } else {
-            $error = "Database error!";
-        }
-
+        $success = $stmt->execute() ? "Entry created successfully!" : "Database error!";
         $stmt->close();
     }
-
 }
 ?>
 <!DOCTYPE html>
@@ -86,41 +84,89 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Create Entry</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../user/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
     body {
-        background: #f4f6fa;
-        font-family: "Inter", sans-serif;
+        /* Linear gradient using ColorHunt palette: dark teal to teal */
+        background: #003239;
+        color: #4f4f4f;
+        /* Base text color */
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
     }
 
     .form-card {
-        border-radius: 18px;
+        border-radius: 20px;
         padding: 35px;
-        background: #fff;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
-        transition: 0.3s ease;
+        background: linear-gradient(145deg, #f4f4f4, #e0f7f7);
+        /* Soft gradient */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.04);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .form-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-    }
-
-    h3 {
-        font-weight: 700;
-        margin-bottom: 20px;
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12), 0 8px 20px rgba(0, 0, 0, 0.06);
     }
 
     label {
         font-weight: 600;
         margin-bottom: 5px;
+        color: #005461;
+        /* Dark teal for labels */
+        display: block;
+        font-size: 0.95rem;
     }
 
-    footer {
-        margin-top: 50px;
+    .input-group-custom input,
+    .input-group-custom textarea {
+        border: 1.8px solid #018790;
+        /* Teal border */
+        padding: 12px 16px;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        font-size: 15px;
+        background: #ffffff;
+        color: #4f4f4f;
+        width: 100%;
+    }
+
+    .input-group-custom input::placeholder,
+    .input-group-custom textarea::placeholder {
+        color: #005461aa;
+        /* Slightly transparent teal */
+    }
+
+    .input-group-custom input:focus,
+    .input-group-custom textarea:focus {
+        border-color: #00b7b5;
+        box-shadow: 0 0 8px rgba(0, 183, 181, 0.35);
+        outline: none;
+        background: #f4f4f4;
+        /* Slight highlight on focus */
+    }
+
+    #previewImage {
+        width: 80px;
+        height: 80px;
+        border-radius: 12px;
+        border: 2px solid #018790;
+        object-fit: cover;
+        display: none;
+        margin-top: 8px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #previewImage.show {
+        display: block;
+        transform: scale(1.05);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
     </style>
+
 
 </head>
 
@@ -129,44 +175,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="container mt-5" style="max-width:700px;">
         <div class="form-card">
 
-            <h3>Create New Entry</h3>
+            <h3 class="text-center mb-3 fw-bold">Create New Entry</h3>
 
-            <?php if($success): ?>
-            <div class="alert alert-success"><?= $success ?></div>
-            <?php endif; ?>
-
-            <?php if($error): ?>
-            <div class="alert alert-danger"><?= $error ?></div>
-            <?php endif; ?>
+            <?php if($success): ?><div class="alert alert-success"><?= $success ?></div><?php endif; ?>
+            <?php if($error): ?><div class="alert alert-danger"><?= $error ?></div><?php endif; ?>
 
             <form method="POST" enctype="multipart/form-data">
 
-                <div class="mb-3">
+                <div class="input-group-custom mb-3">
                     <label>Name</label>
-                    <input type="text" name="name" class="form-control" required>
+                    <input type="text" name="name" class="form-control" placeholder="Enter full name" required>
                 </div>
 
-                <div class="mb-3">
+                <div class="input-group-custom mb-3">
                     <label>Email</label>
-                    <input type="email" name="email" class="form-control" required>
+                    <input type="email" name="email" class="form-control" placeholder="Enter email" required>
                 </div>
 
-                <div class="mb-3">
+                <div class="input-group-custom mb-3">
                     <label>Phone</label>
-                    <input type="text" name="phone" class="form-control" pattern="[0-9]{10}" required>
+                    <input type="text" name="phone" maxlength="10" pattern="[0-9]{10}" class="form-control"
+                        placeholder="10-digit number" required>
                 </div>
 
-                <div class="mb-3">
+                <div class="input-group-custom mb-3">
                     <label>Skills</label>
-                    <textarea name="skills" class="form-control" rows="3"></textarea>
+                    <textarea name="skills" class="form-control" rows="3" placeholder="Describe skills..."></textarea>
                 </div>
 
-                <div class="mb-3">
+                <div class="input-group-custom mb-3">
                     <label>Profile Picture (JPG/PNG)</label>
-                    <input type="file" name="profile_image" class="form-control">
+                    <input type="file" name="profile_image" class="form-control" id="profileInput" accept="image/*">
+
+                    <img id="previewImage" src="#">
                 </div>
 
-                <div class="mb-3">
+                <div class="input-group-custom mb-3">
                     <label>Document (PDF/XLS/XLSX)</label>
                     <input type="file" name="document" class="form-control">
                 </div>
@@ -177,22 +221,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
 
             </form>
+
         </div>
     </div>
 
-    <!-- FOOTER
-    <footer class="bg-dark text-white text-center py-3">
-        <div class="container">
-            <p class="mb-0" style="font-size: 0.9rem;">
-                © <?= date("Y") ?> Candidate Portal. All Rights Reserved.
-            </p>
-            <p class="mb-0" style="font-size: 0.8rem; opacity: 0.7;">
-                Designed with ❤️ for a smooth user experience.
-            </p>
-        </div>
-    </footer> -->
+    <script>
+    document.getElementById("profileInput").addEventListener("change", function(e) {
+        const file = e.target.files[0];
+        const preview = document.getElementById("previewImage");
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                preview.src = event.target.result;
+                preview.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.style.display = "none";
+            preview.src = "";
+        }
+    });
+    </script>
+
 </body>
 
 </html>

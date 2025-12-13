@@ -3,39 +3,37 @@ session_start();
 require_once "../includes/auth.php";
 require_once "../includes/db.php";
 require_once "../user/navbar.php";
-
 checkLogin();
 
-$user_id   = $_SESSION['user_id'];
-$fullname  = $_SESSION['fullname'] ?? 'User';
+$user_id  = $_SESSION['user_id'];
+$fullname = $_SESSION['fullname'] ?? 'User';
 
-/* Fetch Latest Profile Image */
+/*----------------------------------------------------------
+    FETCH LATEST PROFILE IMAGE (Optimized Version)
+----------------------------------------------------------*/
 $profileImage = "https://via.placeholder.com/40";
 
-$query = "
+$stmt = $conn->prepare("
     SELECT profile_image 
     FROM candidate_entries 
     WHERE user_id = ? 
     ORDER BY id DESC 
     LIMIT 1
-";
+");
 
-if ($stmt = $conn->prepare($query)) {
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$stmt->bind_result($imageFile);
 
-    if ($row = $result->fetch_assoc()) {
-        $imageFile = $row['profile_image'];
-        $imagePath = "../uploads/profile/" . $imageFile;
-
-        if (!empty($imageFile) && file_exists($imagePath)) {
-            $profileImage = $imagePath;
-        }
+if ($stmt->fetch() && $imageFile) {
+    $imagePath = "../uploads/profile/$imageFile";
+    if (file_exists($imagePath)) {
+        $profileImage = $imagePath;
     }
-    $stmt->close();
 }
+$stmt->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -44,73 +42,130 @@ if ($stmt = $conn->prepare($query)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard - Candidate Portal</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../user/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <style>
     body {
-        font-family: "Inter", sans-serif;
-        background: linear-gradient(135deg, #f0f4ff, #d9e2ff);
-        min-height: 100vh;
+        /* Background gradient matching navbar colors */
+        background: #003239;
+        color: #4f4f4f;
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
     }
 
+    /* Dashboard Title */
     .dashboard-title {
         font-weight: 800;
-        font-size: 2.2rem;
-        color: #1f2937;
-        margin-bottom: 40px;
+        color: #f4f4f4;
+        /* Light color for contrast on dark background */
         text-align: center;
+        margin-bottom: 40px;
+        font-size: 2.3rem;
     }
 
+    /* Responsive title sizes */
+    @media (max-width: 992px) {
+        .dashboard-title {
+            font-size: 2rem;
+            margin-bottom: 32px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .dashboard-title {
+            font-size: 1.8rem;
+            margin-bottom: 28px;
+        }
+    }
+
+    @media (max-width: 320px) {
+        .dashboard-title {
+            font-size: 1.6rem;
+            margin-bottom: 22px;
+        }
+    }
+
+    /* Dashboard Cards */
     .dashboard-card {
         border-radius: 20px;
-        padding: 40px 25px;
-        background: #ffffff;
+        padding: 35px 25px;
+        background: #f4f4f4;
+        /* Light card background */
         text-align: center;
-        transition: all 0.3s ease;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
         border: none;
         box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
     }
 
+    /* Glow effect on hover */
     .dashboard-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        transform: translateY(-8px);
+        box-shadow:
+            0 0 20px #00b7b5,
+            /* Bright teal glow */
+            0 0 30px #018790,
+            /* Medium teal glow */
+            0 18px 40px rgba(0, 0, 0, 0.12);
+        /* Original shadow for depth */
     }
 
-    .dashboard-card h4 {
-        font-weight: 700;
-        margin-bottom: 10px;
-        font-size: 1.5rem;
-    }
 
-    .dashboard-card p {
-        color: #6b7280;
-        font-size: 1rem;
-    }
-
+    /* Icon Box */
     .icon-box {
-        width: 65px;
-        height: 65px;
-        border-radius: 15px;
-        background: #e0e7ff;
+        width: 70px;
+        height: 70px;
+        border-radius: 17px;
+        background: #00b7b5;
+        /* Bright teal for icons matching palette */
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 15px;
         font-size: 30px;
-        color: #4f46e5;
+        margin: 0 auto 15px;
+        color: #f4f4f4;
+        /* Light icon color for contrast */
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
+    .icon-box:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 25px rgba(0, 183, 181, 0.35);
+    }
+
+    /* Card headings and text */
+    .dashboard-card h4 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #005461;
+        /* Dark teal headings for consistency */
+    }
+
+    .dashboard-card p {
+        color: #4f4f4f;
+        font-size: 0.95rem;
+    }
+
+    /* Links hover */
     a.text-dark:hover {
         text-decoration: none;
+        color: #018790;
+        /* Teal hover effect matching navbar */
     }
     </style>
+
 </head>
 
 <body>
+
     <div class="container mt-5">
-        <h3 class="dashboard-title">Welcome, <?php echo $fullname; ?></h3>
+        <h3 class="dashboard-title">Welcome, <?= htmlspecialchars($fullname) ?></h3>
+
         <div class="row g-4 justify-content-center">
 
             <!-- Create Entry -->
@@ -150,6 +205,7 @@ if ($stmt = $conn->prepare($query)) {
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>

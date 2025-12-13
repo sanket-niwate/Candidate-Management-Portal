@@ -17,35 +17,57 @@ if (isset($_SESSION['role'])) {
 
     <style>
     body {
-        background: url('https://images.unsplash.com/photo-1521790361543-f645cf042ec0?auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+        background: linear-gradient(135deg, #005461, #018790);
         min-height: 100vh;
-        backdrop-filter: blur(4px);
         font-family: "Poppins", sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .welcome-card {
         max-width: 500px;
-        margin: 120px auto;
         padding: 40px;
-        background: rgba(255, 255, 255, 0.75);
+        background: rgba(244, 244, 244, 0.85);
+        /* #f4f4f4 */
         backdrop-filter: blur(12px);
         border-radius: 16px;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 8px 25px rgba(0, 84, 97, 0.25);
         text-align: center;
     }
 
     .welcome-card h1 {
         margin-bottom: 30px;
         font-weight: 600;
-        color: #333;
+        color: #005461;
     }
 
-    .welcome-card .btn {
+    .welcome-card .btn-primary {
+        background: #018790;
+        border: none;
         width: 45%;
         margin: 5px;
         font-size: 1.1rem;
     }
+
+    .welcome-card .btn-primary:hover {
+        background: #005461;
+    }
+
+    .welcome-card .btn-success {
+        background: #00b7b5;
+        border: none;
+        width: 45%;
+        margin: 5px;
+        font-size: 1.1rem;
+    }
+
+    .welcome-card .btn-success:hover {
+        background: #018790;
+        color: #fff;
+    }
     </style>
+
 </head>
 
 <body>

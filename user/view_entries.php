@@ -34,86 +34,135 @@ $stmtOther->close();
 
     <style>
     body {
-        background: #eef2f7;
-        font-family: 'Inter', sans-serif;
+        background: #002c32;
+        background-image: linear-gradient(135deg, #00373f 0%, #001f23 100%);
+        font-family: 'Poppins', sans-serif;
+        color: #e6f7f8;
     }
 
+    /* Heading */
     .section-title {
         font-weight: 700;
         margin: 30px 0 15px;
-        font-size: 1.4rem;
-        color: #2d3436;
+        font-size: 1.6rem;
+        color: #003d46;
+        /* darker shade of #005461 */
     }
 
+    /* Card Container */
     .table-card {
         background: #fff;
         border-radius: 16px;
         padding: 25px;
         margin-bottom: 40px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        transition: 0.3s ease;
+        border: 1px solid #e5e9ec;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+        transition: 0.3s ease-in-out;
     }
+
 
     .table-card:hover {
+        box-shadow:
+            0 0 12px rgba(0, 135, 144, 0.35),
+            0 0 25px rgba(0, 84, 97, 0.25),
+            0 8px 20px rgba(0, 0, 0, 0.15);
         transform: translateY(-3px);
-        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
     }
 
+
+
+    /* Table Header */
     .table thead th {
-        background: #2d3436;
-        color: white;
+        background: #005461;
+        color: #ffffff;
         border: none;
         padding: 12px;
-        font-size: 0.9rem;
+        font-size: 1rem;
+        white-space: nowrap;
     }
 
-    .table tbody tr {
+    /* Table Body */
+    .table tbody td {
         vertical-align: middle;
-        transition: 0.2s;
+        word-break: break-word;
+        white-space: normal;
+        max-width: 230px;
+        font-size: 0.95rem;
+        color: #2f3b40;
     }
 
-    .table tbody tr:hover {
-        background: #f1f8ff;
-    }
-
+    /* Profile Image */
     .profile-img {
         width: 55px;
         height: 55px;
         border-radius: 10px;
         object-fit: cover;
-        border: 2px solid #e5e7eb;
+        border: 2px solid #d9e3e6;
     }
 
+    /* Buttons */
     .btn {
         border-radius: 8px !important;
+        font-size: 0.85rem;
+        padding: 6px 12px;
     }
 
-    .btn-warning {
-        background: #ffb74d;
-        border: none;
-    }
-
-    .btn-danger {
-        background: #ff5252;
-        border: none;
-    }
-
-    .btn-success {
-        background: #66bb6a;
-        border: none;
-    }
-
-    .btn-info {
-        background: #42a5f5;
-        border: none;
-    }
-
+    /* Empty State */
     .empty-text {
-        color: #666;
+        color: #6b7a80;
         font-style: italic;
         padding: 15px;
+        font-size: 0.95rem;
+    }
+
+    /* Hover Glow for Buttons */
+    .btn-warning:hover,
+    .btn-danger:hover,
+    .btn-info:hover,
+    .btn-success:hover {
+        box-shadow: 0px 0px 12px rgba(0, 84, 97, 0.35);
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+        .section-title {
+            font-size: 1.4rem;
+        }
+
+        .table thead th {
+            font-size: 0.90rem;
+        }
+
+        .table tbody td {
+            font-size: 0.88rem;
+        }
+
+        .profile-img {
+            width: 45px;
+            height: 45px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .section-title {
+            font-size: 1.2rem;
+        }
+
+        .table thead th {
+            font-size: 0.85rem;
+        }
+
+        .table tbody td {
+            font-size: 0.85rem;
+        }
+
+        .profile-img {
+            width: 40px;
+            height: 40px;
+        }
     }
     </style>
+
 </head>
 
 <body>
@@ -207,7 +256,10 @@ $stmtOther->close();
                             <td><?= htmlspecialchars($entry['name']) ?></td>
                             <td><?= htmlspecialchars($entry['email']) ?></td>
                             <td><?= htmlspecialchars($entry['phone']) ?></td>
-                            <td><?= htmlspecialchars($entry['skills']) ?></td>
+                            <td title="<?= htmlspecialchars($entry['skills']) ?>">
+                                <?= htmlspecialchars($entry['skills']) ?>
+                            </td>
+
 
                             <td>
                                 <?php if($entry['profile_image']): ?>

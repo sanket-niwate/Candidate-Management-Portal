@@ -108,45 +108,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <style>
     body {
-        background: linear-gradient(135deg, #edf1f5, #ffffff, #eef3fa);
+        background: linear-gradient(135deg, #005461, #018790, #00b7b5);
         font-family: "Poppins", sans-serif;
         height: 100vh;
     }
 
     .register-box {
         max-width: 480px;
-        background: rgba(255, 255, 255, 0.75);
+        background: rgba(244, 244, 244, 0.75);
+        /* #f4f4f4 */
         backdrop-filter: blur(12px);
         margin: 60px auto;
         padding: 40px;
         border-radius: 20px;
-        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 12px 35px rgba(0, 84, 97, 0.25);
         transition: 0.3s ease;
     }
 
     .register-box:hover {
-        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.18);
+        box-shadow: 0 15px 45px rgba(1, 135, 144, 0.35);
         transform: translateY(-4px);
     }
 
     h3 {
         font-weight: 600;
-        color: #333;
+        color: #005461;
     }
 
     label {
         font-weight: 500;
+        color: #005461;
     }
 
     .form-control {
         border-radius: 12px;
         padding: 11px 14px;
-        background: #f9fafb;
-        border: 1px solid #d1d5db;
+        background: #f4f4f4;
+        border: 1px solid #00b7b5;
+        color: #005461;
+    }
+
+    .form-control:focus {
+        border-color: #018790;
+        box-shadow: 0 0 6px rgba(0, 183, 181, 0.5);
     }
 
     .btn-register {
-        background: #0d9488;
+        background: #018790;
         color: white;
         border-radius: 12px;
         padding: 12px;
@@ -155,16 +163,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     .btn-register:hover {
-        background: #0d9488;
+        background: #005461;
     }
 
-    .btn-login {
+    .btn-secondary {
+        background: #00b7b5;
+        color: white;
+        border: none;
         border-radius: 12px;
         padding: 12px;
-        width: 100%;
         font-weight: 600;
     }
+
+    .btn-secondary:hover {
+        background: #018790;
+    }
+
+    .alert-success {
+        background: #e6fffa;
+        border-left: 5px solid #00b7b5;
+        color: #005461;
+        font-weight: 500;
+    }
+
+    .alert-danger {
+        background: #ffe5e5;
+        border-left: 5px solid #ff6b6b;
+        color: #b30000;
+    }
     </style>
+
 </head>
 
 <body>
