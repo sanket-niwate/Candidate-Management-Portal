@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 12, 2025 at 11:25 AM
+-- Generation Time: Dec 13, 2025 at 11:37 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -68,11 +68,10 @@ INSERT INTO `candidate_entries` (`id`, `user_id`, `name`, `email`, `phone`, `ski
 (10, 3, 'neha', 'neha@gmail.com', '1234567890', 'ss', '1764172223_692721bfb29a4.jpg', '1764165170_692706324191d.pdf', '2025-11-26 13:52:50'),
 (11, 4, 'sid', 'sid@gmail.com', '1234567890', 's', '1764181743_692746efc14c4.jpg', '1764181743_692746efc1ce7.pdf', '2025-11-26 18:29:03'),
 (12, 6, 'tans', 'tan@gmail.com', '1234567890', 'dn', '1764188089_69275fb9c89c7.jpg', '1764188089_69275fb9c8d46.pdf', '2025-11-26 20:14:49'),
-(13, 12, 'xomesasu@denipl.net', 'xomesasu@denipl.net', '0123456789', 'kbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb555', '1765473545_backiee-122731.jpg', '1765158783_69362f7fce569.pdf', '2025-12-08 01:53:03'),
+(13, 12, 'xomesasu@denipl.net', 'xomesasu@denipl.net', '0123456789', 'kbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', '1765473545_backiee-122731.jpg', '1765158783_69362f7fce569.pdf', '2025-12-08 01:53:03'),
 (15, 2, 'sanket', 'sanket@gmail.com', '0123456789', 'k', '1765474657_693b0161bf358.jpg', '1765474657_693b0161bf7c2.pdf', '2025-12-11 17:37:37'),
 (16, 2, 'sanket', 'sanket@gmail.com', '0123456789', 'k', '1765474664_693b01685cf13.jpg', '1765474664_693b01685d2b5.pdf', '2025-12-11 17:37:44'),
-(17, 14, 'mimivibo@denipl.net', 'mimivibo@denipl.net', '1234565555', 'mimivibo@denipl.net', '1765476241_backiee-223607.jpg', '1765475118_693b032e32c62.pdf', '2025-12-11 17:45:18'),
-(21, 16, 'hicoh29165@roastic.com', 'hicoh29165@roastic.com', '1111111111', 'hicoh29165@roastic.com', '1765534838_693bec767ba24.jpg', NULL, '2025-12-12 10:20:38');
+(17, 14, 'mimivibo@denipl.net', 'mimivibo@denipl.net', '1234565555', 'mimivibo@denipl.net', '1765476241_backiee-223607.jpg', '1765475118_693b032e32c62.pdf', '2025-12-11 17:45:18');
 
 -- --------------------------------------------------------
 
@@ -102,9 +101,7 @@ INSERT INTO `users` (`id`, `fullname`, `email`, `password`, `role`, `phone`, `pr
 (6, 'tan', 'tan@gmail.com', '$2y$10$gGfR9ayJfg3AaXSULstohe8uyolRTySLT.feEZfUaahnePztXB1Xe', 'user', NULL, NULL, '2025-11-26 20:11:53'),
 (11, 'admin', 'admin@gmail.com', '$2y$10$yq.GvYzNDz6NHLy4uU9AFeiaEujErKgJDgb2FAbMUMLzQ9KhUwAye', 'admin', NULL, NULL, '2025-11-27 13:02:21'),
 (12, 'xomesasu@denipl.net', 'xomesasu@denipl.net', '$2y$10$LJMkeMLv3uKr8MNfZu3eXOk2tWoS/hU2.rdHh7swt4BkCfnyrWzPa', 'user', NULL, NULL, '2025-12-08 01:50:44'),
-(13, 'qyveri@fxzig.com', 'qyveri@fxzig.com', '$2y$10$8xynxAGcjbP6xPXGawHOFOD71Zme5BYW5OhojrrbrwWGDRh1Hgw0S', 'user', NULL, NULL, '2025-12-08 14:59:21'),
-(14, 'mimivibo@denipl.net', 'mimivibo@denipl.net', '$2y$10$ckzyxVbzLyJXOcBKJRdE3u47PRhfu9wdRXWXTAAar1IT4iomvr95q', 'user', NULL, NULL, '2025-12-11 16:54:25'),
-(16, 'hicoh29165@roastic.com', 'hicoh29165@roastic.com', '$2y$10$HXf3g2MYzqjJ9D76fDEOQurCsdbHHki2LEwfOyM3DwXwK36c6aEE.', 'user', NULL, NULL, '2025-12-12 10:18:49');
+(14, 'mimivibo@denipl.net', 'mimivibo@denipl.net', '$2y$10$ckzyxVbzLyJXOcBKJRdE3u47PRhfu9wdRXWXTAAar1IT4iomvr95q', 'user', NULL, NULL, '2025-12-11 16:54:25');
 
 --
 -- Indexes for dumped tables
@@ -151,7 +148,7 @@ ALTER TABLE `candidate_entries`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Constraints for dumped tables
